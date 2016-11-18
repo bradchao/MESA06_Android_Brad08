@@ -21,7 +21,7 @@ public class GameView extends View {
     private boolean isInit;
     private Bitmap bmpBall;
     private Matrix matrix;
-    private float ballW, ballH, ballX, ballY;
+    private float ballW, ballH, ballX, ballY, dx , dy;
     Timer timer;
 
     public GameView(Context context, AttributeSet attrs) {
@@ -36,6 +36,8 @@ public class GameView extends View {
         viewW = getWidth(); viewH = getHeight();
         Log.v("brad", viewW + "x" +viewH);
 
+        dx = dy = 10;
+
         bmpBall = BitmapFactory.decodeResource(res,R.drawable.brad);
         ballW = viewW / 12f; ballH = ballW;
         bmpBall = resizeBmp(bmpBall, ballW, ballH);
@@ -48,7 +50,13 @@ public class GameView extends View {
     private class BallTask extends TimerTask {
         @Override
         public void run() {
-            ballX += 10; ballY += 10;
+            if (ballX<0 || ballX + ballW > viewW){
+                dx *= -1;
+            }
+            if (ballY <0 || ballY+ballH>viewH){
+                dy *= -1;
+            }
+            ballX += dx; ballY += dy;
             postInvalidate();
         }
     }
